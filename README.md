@@ -13,15 +13,33 @@
     │   │   ├── __init__.py
     │   │   └── text_utils.py
     │   │
-    │   └── config.py
+    │   ├── config/
+    │   │   ├── __init__.py
+    │   │   └── environment.py
+    │   │
+    │   ├── lib/
+    │   │   ├── __init__.py
+    │   │   ├── enums/
+    │   │   │   ├── __init__.py
+    │   │   │   └── http_status_code.py
+    │   │   └── interfaces/
+    │   │       ├── __init__.py
+    │   │       └── global_error.py
+    │   │
+    │   └── assets/
+    │       └── financial_doc.pdf
     │
     ├── instance/
     │   └── config.py
     │
     ├── tests/
-    │   └── __init__.py
+    │   ├── __init__.py
+    │   └── test.py
     │
     ├── uploads/
+    ├── .env
+    ├── develop.Dockerfile
+    ├── rebuild.sh
     ├── requirements.txt
     └── run.py
 
@@ -31,7 +49,7 @@ This structure provides a complete Flask application for document search and sum
 
 2. **app/__init__.py**: Flask application factory
 
-3. app/config.py: Configuration settings
+3. app/config: Configuration settings
 
 4. app/routes.py: API endpoints for upload and search
 
@@ -46,10 +64,17 @@ This structure provides a complete Flask application for document search and sum
 ### .env
 
         OPENAI_API_KEY=your_api_key_here
-        SECRET_KEY=your_secret_key_here
+        FLASK_HOST=host
+        FLASK_PORT=port
 
 
+## START IN DOCKER CONTAINER
 
+- Install docker desktop
+- run   :  `sudo ./rebuild.sh`
+
+
+## START LOCALLY 
 
 ### Start Virtual Environment with pip
 
@@ -113,6 +138,20 @@ Install faiss-cpu using conda:
 
 ### API DOCUMENTATION: 
 
-        The application provides two main endpoints:
-        POST /upload - Upload and process PDF documents
-        POST /search - Search through processed documents
+The application provides two main endpoints:
+
+#### API CURL
+
+- POST /upload - Upload and process PDF documents
+
+        curl --location 'http://127.0.0.1:5000/upload' \
+        --form 'file=@"postman-cloud:///1f0068ef-02cb-45b0-b657-19311e929eae"'
+
+- POST /search - Search through processed documents
+
+        curl --location 'http://127.0.0.1:5000/search' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "query":"What is the interest rate in 2002 ?",
+            "summary_length_type":"short" // enum = ['short', 'medium' , 'long' ]
+        }'
