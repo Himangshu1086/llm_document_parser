@@ -26,7 +26,9 @@ def process_document(file):
         os.remove(temp_path)
         if isinstance(e, GlobalError):
             return e
-        return GlobalError(message="An unexpected error occurred", status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, error=e).to_dict()
+        return GlobalError(message="An unexpected error occurred", 
+                           status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, 
+                           error=e).to_dict()
 
     finally:
         # Clean up

@@ -37,7 +37,8 @@ def init_search_service():
 def search_documents(query, summary_length_type=SummaryLengthType.SHORT.value, top_k_results=1):
     try:
         if index is None:
-            return GlobalError(message="No documents indexed", status_code=HttpStatusCode.NOT_FOUND.value).to_dict()
+            return GlobalError(message="No documents indexed", 
+                               status_code=HttpStatusCode.NOT_FOUND.value).to_dict()
         
         # Check cache first
         query_normalized = normalize_query(query + " " + summary_length_type)
@@ -55,7 +56,8 @@ def search_documents(query, summary_length_type=SummaryLengthType.SHORT.value, t
         )['data'][0]['embedding']
 
         # Search the index
-        distances, indices = index.search(np.array([query_embedding]).astype('float32'),top_k_results)
+        distances, indices = index.search(np.array([query_embedding])
+                                          .astype('float32'),top_k_results)
         
         # Get the corresponding text chunks
         results = []
@@ -77,7 +79,8 @@ def search_documents(query, summary_length_type=SummaryLengthType.SHORT.value, t
                     is_unclear = (
                         distance > constants.get('THRESHOLD_DISTANCE') or  # FAISS distance too high
                         len(retrieved_text.split()) < 20 or  # Too short passage
-                        len(set(query.lower().split()) & set(retrieved_text.lower().split())) < 3  # Low keyword overlap
+                        len(set(query.lower().split()) & 
+                            set(retrieved_text.lower().split())) < 3  # Low keyword overlap
                     )
                   
                     
@@ -95,7 +98,9 @@ def search_documents(query, summary_length_type=SummaryLengthType.SHORT.value, t
     except Exception as e:
         if isinstance(e, GlobalError):
             return e
-        return GlobalError(message="An unexpected error occurred", status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, error=e).to_dict()
+        return GlobalError(message="An unexpected error occurred", 
+                           status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, 
+                           error=e).to_dict()
 
 
 

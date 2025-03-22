@@ -25,7 +25,9 @@ def generate_embeddings(text_chunks, document_id):
     except Exception as e:
         if isinstance(e, GlobalError):
             return e
-        return GlobalError(message="An unexpected error occurred", status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, error=e).to_dict()
+        return GlobalError(message="An unexpected error occurred", 
+                           status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, 
+                           error=e).to_dict()
 
 
 
@@ -61,4 +63,6 @@ def store_embeddings(embeddings, text_chunks, document_id):
     except Exception as e:
         if isinstance(e, GlobalError):
             return e
-        return GlobalError(message="An unexpected error occurred", status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, error=e).to_dict()
+        return GlobalError(message="An unexpected error occurred", 
+                           status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, 
+                           error=e).to_dict()
