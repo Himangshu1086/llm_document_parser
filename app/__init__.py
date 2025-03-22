@@ -4,6 +4,7 @@ from app.services.search_service import init_search_service
 from app.routes import main
 from app.lib.interfaces.global_error import GlobalError
 from app.lib.enums.http_status_code import HttpStatusCode
+import nltk
 def create_app(config_class=config):
     try:
         app = Flask(__name__)
@@ -14,6 +15,11 @@ def create_app(config_class=config):
 
         # Register blueprints
         app.register_blueprint(main)
+
+        nltk.download('punkt')
+        nltk.download('wordnet')
+        nltk.download('stopwords')
+        nltk.download('punkt_tab')
 
         return app
     except Exception as e:

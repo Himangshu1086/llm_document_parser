@@ -40,7 +40,7 @@ def search():
         return GlobalResponse(data=None, message="No query provided", status_code=HttpStatusCode.BAD_REQUEST.value).to_dict()
 
     try:
-        results = search_documents(data['query'])
+        results = search_documents(data['query'], data['summary_length_type'])
         return GlobalResponse(data=results, message="Search results", status_code=HttpStatusCode.OK.value).to_dict()
     except Exception as e:
             return GlobalResponse(data=None, message="An unexpected error occurred", status_code=HttpStatusCode.INTERNAL_SERVER_ERROR.value, error=e).to_dict()
