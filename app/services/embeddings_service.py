@@ -10,7 +10,7 @@ from app.lib.enums.http_status_code import HttpStatusCode
 
 openai.api_key = config[EnvironmentVariables.OPENAI_API_KEY.value]
 
-def generate_embeddings(text_chunks, document_id):
+def generate_embeddings(text_chunks):
     try:
         embeddings = []
         for chunk in text_chunks:
@@ -21,7 +21,7 @@ def generate_embeddings(text_chunks, document_id):
             embeddings.append(response['data'][0]['embedding'])
     
         # Store embeddings and text chunks
-        store_embeddings(embeddings, text_chunks, document_id)
+        store_embeddings(embeddings, text_chunks)
     except Exception as e:
         if isinstance(e, GlobalError):
             return e
@@ -31,7 +31,7 @@ def generate_embeddings(text_chunks, document_id):
 
 
 
-def store_embeddings(embeddings, text_chunks, document_id):
+def store_embeddings(embeddings, text_chunks):
     try:
         # Convert embeddings to numpy array
         embeddings_array = np.array(embeddings).astype('float32')
@@ -51,15 +51,15 @@ def store_embeddings(embeddings, text_chunks, document_id):
         
         # Store the text chunks with their document ID
         chunks_path = 'uploads/text_chunks.pkl'
-        chunks_data = {}
+        chunks_data = []
         if os.path.exists(chunks_path):
             with open(chunks_path, 'rb') as f:
                 chunks_data = pickle.load(f)
         
-        chunks_data[document_id] = text_chunks
-        
+        chunks_data.append(text_chunks)
+
         with open(chunks_path, 'wb') as f:
-            pickle.dump(chunks_data, f) 
+            pickle.dump(chunks_data, f)
     except Exception as e:
         if isinstance(e, GlobalError):
             return e

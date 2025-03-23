@@ -7,7 +7,7 @@ lemmatizer = WordNetLemmatizer()
 
 
 
-def split_text_into_chunks(text, chunk_size=500, overlap=50):
+def split_text_into_chunks(text, chunk_size=1000, overlap=100):
     """
     Split text into overlapping chunks of approximately equal size.
     """
@@ -33,6 +33,19 @@ def split_text_into_chunks(text, chunk_size=500, overlap=50):
     
     return chunks 
 
+
+
+def clean_text(text: str) -> str:
+    # Remove excessive newlines and replace them with spaces where appropriate
+    text = re.sub(r"\n+", " ", text)
+    
+    # Remove extra spaces before punctuation
+    text = re.sub(r"\s+([,\.:])", r"\1", text)
+    
+    # Normalize spaces between words
+    text = re.sub(r"\s+", " ", text).strip()
+    
+    return text
 
 
 def get_summary_length(summary_length):

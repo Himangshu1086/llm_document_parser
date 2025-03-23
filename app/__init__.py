@@ -16,6 +16,7 @@ def create_app(config_class=config):
         # Register blueprints
         app.register_blueprint(main)
 
+        # nltk starter package
         nltk.download('punkt')
         nltk.download('wordnet')
         nltk.download('stopwords')

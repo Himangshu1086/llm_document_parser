@@ -21,9 +21,8 @@ def process_document(file):
         chunks = split_text_into_chunks(text)
 
         # Generate embeddings for chunks
-        generate_embeddings(chunks, file.filename)
+        generate_embeddings(chunks)
     except Exception as e:
-        os.remove(temp_path)
         if isinstance(e, GlobalError):
             return e
         return GlobalError(message="An unexpected error occurred", 

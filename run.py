@@ -5,4 +5,5 @@ app = create_app()
 
 if __name__ == '__main__':
     '''TODO: Remove debug=False when ready to deploy and host on a cloud service'''
+    # app.run(debug=True)
     app.run(host=config[EnvironmentVariables.FLASK_HOST.value], port=config[EnvironmentVariables.FLASK_PORT.value], debug=False)
